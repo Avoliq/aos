@@ -41,7 +41,8 @@ let options = {
   useClassNames: false,
   disableMutationObserver: false,
   throttleDelay: 99,
-  debounceDelay: 50
+  debounceDelay: 50,
+  scrollingElement: window
 };
 
 // Detect not supported browsers (<=IE9)
@@ -52,15 +53,15 @@ const initializeScroll = function initializeScroll() {
   // Extend elements objects in $aosElements with their positions
   $aosElements = prepare($aosElements, options);
   // Perform scroll event, to refresh view and show/hide elements
-  handleScroll($aosElements);
+  handleScroll($aosElements, options.scrollingElement);
 
   /**
    * Handle scroll event to animate elements on scroll
    */
-  window.addEventListener(
+  options.scrollingElement.addEventListener(
     'scroll',
     throttle(() => {
-      handleScroll($aosElements, options.once);
+      handleScroll($aosElements, options.once)(options.scrollingElement);
     }, options.throttleDelay)
   );
 
